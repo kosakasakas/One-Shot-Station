@@ -46,7 +46,8 @@ typedef enum {
   PLUS,
   HOME,
   LOOP_START,
-  NOTHING
+  NOTHING,
+  LOOP_FINISH,
 } Buttons_t;
 
 typedef struct {
@@ -68,6 +69,7 @@ static const command step[] = {
   { LOOP_START, 0 },
   // これより下を無限ループ
 
+/*
   { A,          2 }, // ワット回収
   { NOTHING,   10 },
   { B,          2 },
@@ -112,8 +114,11 @@ static const command step[] = {
   { NOTHING,    1 },
   { DOWN,       2 },
   { NOTHING,    1 },
+  */
   { A,          2 }, // 現在の日付と時刻
   { NOTHING,    5 },
+  { LEFT,      30 },
+  { NOTHING,    1 },
 
   { DOWN,       5 }, // 年号1つもどす
   { NOTHING,    1 },
@@ -148,12 +153,17 @@ static const command step[] = {
   { NOTHING,    1 },
   { A,          2 }, // 日付 OK
   { NOTHING,    5 },
-
+/*
   { HOME,       2 },  // ゲームに戻る
   { NOTHING,   30 },
   { HOME,       2 },
   { NOTHING,   30 },
+  */
+  { LOOP_FINISH, 0 },
 };
+
+int loop_count = 0;
+const int loop_end = 115;
 
 // Main entry point.
 int main(void) {
@@ -164,6 +174,8 @@ int main(void) {
   // Once that's done, we'll enter an infinite loop.
   for (;;)
   {
+    if (loop_count >= loop_end) break;
+
     // We need to run our task to process and deliver data for our IN and OUT endpoints.
     HID_Task();
     // We also need to run the main USB management task.
@@ -419,6 +431,10 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 
         case HOME:
           ReportData->Button |= SWITCH_HOME;
+          break;
+
+        case LOOP_FINISH:
+          ++loop_count;
           break;
 
         default:
