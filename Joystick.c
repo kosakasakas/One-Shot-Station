@@ -45,6 +45,8 @@ typedef enum {
   R,
   PLUS,
   HOME,
+  ZL,
+  ZR,
   LOOP_START,
   NOTHING
 } Buttons_t;
@@ -67,92 +69,39 @@ static const command step[] = {
   // loop Start
   { LOOP_START, 0 },
   // これより下を無限ループ
-
-  { A,          2 }, // ワット回収
-  { NOTHING,   10 },
-  { B,          2 },
-  { NOTHING,   10 },
-  { B,          2 },
-  { NOTHING,  120 },
-  { B,          2 },
-  { NOTHING,   20 }, // レイド閉じる
-
-  { HOME,       5 }, // Home
-  { NOTHING,   15 },
-  { DOWN,       2 },
-  { NOTHING,    1 },
-  { RIGHT,      2 },
-  { NOTHING,    1 },
-  { RIGHT,      2 },
-  { NOTHING,    1 },
-  { RIGHT,      2 },
-  { NOTHING,    1 },
-  { RIGHT,      2 },
-  { NOTHING,    1 },
-  { A,          2 }, // 設定選択
-  { NOTHING,    5 },
-
-  { DOWN,      80 },
-
-  { A,          2 }, // 設定>本体 選択
-  { NOTHING,    5 },
-
-  { DOWN,       2 },
-  { NOTHING,    2 },
-  { DOWN,       2 },
-  { NOTHING,    2 },
-  { DOWN,       2 },
-  { NOTHING,    2 },
-  { DOWN,       2 },
-  { NOTHING,    2 },
-  { A,          2 }, // 日付と時刻選択
-  { NOTHING,   10 },
-
-  { DOWN,       2 },
-  { NOTHING,    1 },
-  { DOWN,       2 },
-  { NOTHING,    1 },
-  { A,          2 }, // 現在の日付と時刻
-  { NOTHING,    5 },
-
-  { DOWN,       5 }, // 年号1つもどす
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 }, // 日付 OK
-  { NOTHING,    5 },
-
-  { A,          2 },
-  { NOTHING,    1 },
-  { LEFT,      30 },
-  { NOTHING,    1 },
-  { UP,         2 }, // 年号1つすすめる
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 }, // 日付 OK
-  { NOTHING,    5 },
-
-  { HOME,       2 },  // ゲームに戻る
+  { ZL,         2 },
   { NOTHING,   30 },
-  { HOME,       2 },
+  { A,          2 },
+  { NOTHING,   10 },
+  { A,          2 },
+  { NOTHING,   10 },
+  { B,          2 },
+  { NOTHING,   10 },
+  { UP,         2 },
+  { NOTHING,   10 },
+  { ZL,         2 },
   { NOTHING,   30 },
+  { A,          2 },
+  { NOTHING,   10 },
+  { ZL,         2 },
+  { NOTHING,   30 },
+  { A,          2 },
+  { NOTHING,   10 },
+  { UP,         2 },
+  { NOTHING,   10 },
+  { ZL,         2 },
+  { NOTHING,   30 },
+  { A,          2 },
+  { NOTHING,   10 },
+  { UP,         2 },
+  { NOTHING,   10 },
+  { ZL,         2 },
+  { NOTHING,   30 },
+  { L,          2 },
+  { NOTHING,   10 },
+  { L,          2 },
+  { NOTHING,   10 },
+
 };
 
 // Main entry point.
@@ -409,6 +358,10 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
           ReportData->Button |= SWITCH_Y;
           break;
 
+        case L:
+          ReportData->Button |= SWITCH_L;
+          break;
+
         case R:
           ReportData->Button |= SWITCH_R;
           break;
@@ -419,6 +372,14 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 
         case HOME:
           ReportData->Button |= SWITCH_HOME;
+          break;
+
+        case ZL:
+          ReportData->Button |= SWITCH_ZL;
+          break;
+
+        case ZR:
+          ReportData->Button |= SWITCH_ZR;
           break;
 
         default:
