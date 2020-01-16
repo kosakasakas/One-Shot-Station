@@ -68,14 +68,14 @@ static const command step[] = {
   { LOOP_START, 0 },
   // これより下を無限ループ
 
-  { A,          2 }, // ワット回収
+  { A,          2 }, 
   { NOTHING,   10 },
-  { B,          2 },
+  { A,          2 }, //巣穴から~
   { NOTHING,   10 },
-  { B,          2 },
-  { NOTHING,  120 },
-  { B,          2 },
-  { NOTHING,   20 }, // レイド閉じる
+  { A,          2 }, //ワット回収!!
+  { NOTHING,   30 },
+
+
 
   { HOME,       5 }, // Home
   { NOTHING,   15 },
@@ -130,11 +130,56 @@ static const command step[] = {
   { A,          2 }, // 日付 OK
   { NOTHING,    5 },
 
+  { HOME,       2 },  // ゲームに戻る
+  { NOTHING,   30 },
+  { HOME,       2 },
+  { NOTHING,   30 },
+
+
   { A,          2 },
+  { NOTHING,   10 },
+  { A,          2 }, // みんなで挑戦
+  { NOTHING,   80 },
+
+  { HOME,       5 }, // Home
+  { NOTHING,   15 },
+  { DOWN,       2 },
   { NOTHING,    1 },
-  { LEFT,      30 },
+  { RIGHT,      2 },
   { NOTHING,    1 },
-  { UP,         2 }, // 年号1つすすめる
+  { RIGHT,      2 },
+  { NOTHING,    1 },
+  { RIGHT,      2 },
+  { NOTHING,    1 },
+  { RIGHT,      2 },
+  { NOTHING,    1 },
+  { A,          2 }, // 設定選択
+  { NOTHING,    5 },
+
+  { DOWN,      80 },
+
+  { A,          2 }, // 設定>本体 選択
+  { NOTHING,    5 },
+
+  { DOWN,       2 },
+  { NOTHING,    2 },
+  { DOWN,       2 },
+  { NOTHING,    2 },
+  { DOWN,       2 },
+  { NOTHING,    2 },
+  { DOWN,       2 },
+  { NOTHING,    2 },
+  { A,          2 }, // 日付と時刻選択
+  { NOTHING,   10 },
+
+  { DOWN,       2 },
+  { NOTHING,    1 },
+  { DOWN,       2 },
+  { NOTHING,    1 },
+  { A,          2 }, // 現在の日付と時刻
+  { NOTHING,    5 },
+
+  { UP,         5 }, // 年号1つすすめる
   { NOTHING,    1 },
   { A,          2 },
   { NOTHING,    1 },
@@ -153,6 +198,12 @@ static const command step[] = {
   { NOTHING,   30 },
   { HOME,       2 },
   { NOTHING,   30 },
+
+  { B,          2 }, // やめる
+  { NOTHING,   30 },
+  { A,          2 }, // はい
+  { NOTHING,  140 },
+  
 };
 
 // Main entry point.
