@@ -88,7 +88,7 @@ static const command step[] = {
   { A,          2 }, // 設定選択
   { NOTHING,    5 },
 
-  { DOWN,     100 },
+  { DOWN,      90 },
 
   { A,          2 }, // 設定>本体 選択
   { NOTHING,    5 },
@@ -198,8 +198,8 @@ static const command step[] = {
   { B,          2 }, // やめる
   { NOTHING,   30 },
   { A,          2 }, // はい
-  { NOTHING,  160 },
-  
+  { NOTHING,  150 },
+
   { A,          2 }, 
   { NOTHING,   10 },
   { A,          2 }, //巣穴から~
