@@ -68,12 +68,8 @@ static const command step[] = {
   { LOOP_START, 0 },
   // これより下を無限ループ
 
-  { A,          2 }, 
-  { NOTHING,   10 },
-  { A,          2 }, //巣穴から~
-  { NOTHING,   10 },
   { A,          2 }, //ワット回収!!
-  { NOTHING,   30 },
+  { NOTHING,   10 },
 
 
 
@@ -92,7 +88,7 @@ static const command step[] = {
   { A,          2 }, // 設定選択
   { NOTHING,    5 },
 
-  { DOWN,      80 },
+  { DOWN,     100 },
 
   { A,          2 }, // 設定>本体 選択
   { NOTHING,    5 },
@@ -139,7 +135,7 @@ static const command step[] = {
   { A,          2 },
   { NOTHING,   10 },
   { A,          2 }, // みんなで挑戦
-  { NOTHING,   80 },
+  { NOTHING,  100 },
 
   { HOME,       5 }, // Home
   { NOTHING,   15 },
@@ -202,7 +198,12 @@ static const command step[] = {
   { B,          2 }, // やめる
   { NOTHING,   30 },
   { A,          2 }, // はい
-  { NOTHING,  140 },
+  { NOTHING,  160 },
+  
+  { A,          2 }, 
+  { NOTHING,   10 },
+  { A,          2 }, //巣穴から~
+  { NOTHING,   10 },
   
 };
 
