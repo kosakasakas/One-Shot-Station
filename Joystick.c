@@ -20,6 +20,15 @@ these buttons for our use.
 
 #include "Joystick.h"
 
+// オレオレ無限の定義. 
+const int INFINITY = 999999;
+
+// ループの回数指定. INFINITY指定なら無限回ループ
+const int loop_num = INFINITY;
+
+// ループカウント. loop_numを超えた場合はリセットされます.
+int loop_count = 0;
+
 typedef enum {
   UP,
   DOWN,
@@ -46,6 +55,10 @@ typedef enum {
   PLUS,
   HOME,
   LOOP_START,
+  LOOP_END,
+  IF_LOOP_N,      // N回目のループの場合のみ発火する処理の開始
+  ELSE_IF_LOOP_N, // N回目のループの場合以外に発火する処理の開始
+  END_IF_LOOP_N,  // N回目のループ条件処理の終了
   NOTHING
 } Buttons_t;
 
@@ -205,6 +218,8 @@ static const command step[] = {
   { A,          2 }, //巣穴から~
   { NOTHING,   10 },
   
+
+  { LOOP_END, 0 },
 };
 
 // Main entry point.
@@ -216,6 +231,9 @@ int main(void) {
   // Once that's done, we'll enter an infinite loop.
   for (;;)
   {
+    // ループ回数が指定されている場合は終了
+    if ( (loop_num != INFINITY) && (loop_count >= loop_end)) break;
+
     // We need to run our task to process and deliver data for our IN and OUT endpoints.
     HID_Task();
     // We also need to run the main USB management task.
@@ -342,6 +360,9 @@ int hold_RX = STICK_CENTER;
 int bufindex = 0;
 int duration_count = 0;
 int loop_start_step = 0;
+int else_loop_n_index = 0;
+int end_loop_n_index = 0;
+bool is_loop_n = false;
 
 void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
   // Prepare an empty report
@@ -472,11 +493,33 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
         case HOME:
           ReportData->Button |= SWITCH_HOME;
           break;
+          
+        case LOOP_END:
+          ++loop_count;
+          break;
+
+        case IF_LOOP_N:
+          is_loop_n = ( loop_count == step[bufindex].duration);
+          break;
+        
+        case ELSE_IF_LOOP_N:
+          else_loop_n_index = bufindex;
+          break;
+
+        case END_IF_LOOP_N:
+          end_loop_n_index = bufindex;
+          break;
 
         default:
           break;
       }
 
+    if (is_loop_n)
+    {
+
+    }
+    else
+    {
     duration_count++;
 
     if (duration_count > step[bufindex].duration)
@@ -490,6 +533,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
     {
       bufindex = loop_start_step;
       duration_count = 0;
+    }
     }
   }
 
