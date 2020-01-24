@@ -20,13 +20,8 @@ these buttons for our use.
 
 #include "Joystick.h"
 
-// オレオレ無限の定義. 
-const int INFINITY = 999999;
+#define LOOP_NUM 62
 
-// ループの回数指定. INFINITY指定なら無限回ループ
-const int loop_num = INFINITY;
-
-// ループカウント. loop_numを超えた場合はリセットされます.
 int loop_count = 0;
 
 typedef enum {
@@ -56,9 +51,7 @@ typedef enum {
   HOME,
   LOOP_START,
   LOOP_END,
-  IF_LOOP_N,      // N回目のループの場合のみ発火する処理の開始
-  ELSE_IF_LOOP_N, // N回目のループの場合以外に発火する処理の開始
-  END_IF_LOOP_N,  // N回目のループ条件処理の終了
+  IF_FINAL_LOOP,
   NOTHING
 } Buttons_t;
 
@@ -77,78 +70,49 @@ static const command step[] = {
 
   // 初期設定など1回だけ動かしたいコードはここまで
 
-  // loop Start
   { LOOP_START, 0 },
   // これより下を無限ループ
 
-  { A,          2 }, //ワット回収!!
-  { NOTHING,   10 },
-
-
-
-  { HOME,       5 }, // Home
-  { NOTHING,   15 },
-  { DOWN,       2 },
-  { NOTHING,    1 },
-  { RIGHT,      2 },
-  { NOTHING,    1 },
-  { RIGHT,      2 },
-  { NOTHING,    1 },
-  { RIGHT,      2 },
-  { NOTHING,    1 },
-  { RIGHT,      2 },
-  { NOTHING,    1 },
-  { A,          2 }, // 設定選択
-  { NOTHING,    5 },
-
-  { DOWN,      90 },
-
-  { A,          2 }, // 設定>本体 選択
-  { NOTHING,    5 },
-
-  { DOWN,       2 },
-  { NOTHING,    2 },
-  { DOWN,       2 },
-  { NOTHING,    2 },
-  { DOWN,       2 },
-  { NOTHING,    2 },
-  { DOWN,       2 },
-  { NOTHING,    2 },
-  { A,          2 }, // 日付と時刻選択
-  { NOTHING,   10 },
-
-  { DOWN,       2 },
-  { NOTHING,    1 },
-  { DOWN,       2 },
-  { NOTHING,    1 },
-  { A,          2 }, // 現在の日付と時刻
-  { NOTHING,    5 },
-
-  { DOWN,       5 }, // 年号1つもどす
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 },
-  { NOTHING,    1 },
-  { A,          2 }, // 日付 OK
-  { NOTHING,    5 },
-
-  { HOME,       2 },  // ゲームに戻る
+  { X,          2 },
   { NOTHING,   30 },
-  { HOME,       2 },
-  { NOTHING,   30 },
+  { A,          2 },
+  { NOTHING,   90 },
+  { RIGHT,      1 },
+  { NOTHING,    2 },
+  { A,          2 },
+  { NOTHING,    2 },
+  { UP,         2 },
+  { NOTHING,    2 },
+  { A,          2 },
+  { NOTHING,    2 },
+  { A,          2 },
+  { NOTHING,    2 },
+  { A,          2 },
+  { NOTHING,    2 },
+  { A,          2 },
+  { NOTHING,   90 },
 
-
+  { RIGHT,    120 },
+  { NOTHING,    5 },
+  { DOWN,      10 },
+  { NOTHING,    5 },
   { A,          2 },
   { NOTHING,   10 },
-  { A,          2 }, // みんなで挑戦
-  { NOTHING,  100 },
+  { A,          2 },
+  { NOTHING,   10 },
+  { A,          2 },
+  { NOTHING,   10 },
+  
+  /*
+  { IF_FINAL_LOOP, 0 },
+
+  { DOWN,      20 },
+  { NOTHING,    2 },
+  { LEFT,    1065 },
+  { NOTHING,    2 },
+  { UP,        20 },
+  { NOTHING,    2 },
+*/
 
   { HOME,       5 }, // Home
   { NOTHING,   15 },
@@ -188,7 +152,7 @@ static const command step[] = {
   { A,          2 }, // 現在の日付と時刻
   { NOTHING,    5 },
 
-  { UP,         5 }, // 年号1つすすめる
+  { DOWN,       5 }, // 年号1つもどす
   { NOTHING,    1 },
   { A,          2 },
   { NOTHING,    1 },
@@ -203,23 +167,31 @@ static const command step[] = {
   { A,          2 }, // 日付 OK
   { NOTHING,    5 },
 
-  { HOME,       2 },  // ゲームに戻る
+  { A,          2 },
+  { NOTHING,    1 },
+  { LEFT,      30 },
+  { NOTHING,    1 },
+  { UP,         2 }, // 年号1つすすめる
+  { NOTHING,    1 },
+  { A,          2 },
+  { NOTHING,    1 },
+  { A,          2 },
+  { NOTHING,    1 },
+  { A,          2 },
+  { NOTHING,    1 },
+  { A,          2 },
+  { NOTHING,    1 },
+  { A,          2 },
+  { NOTHING,    1 },
+  { A,          2 }, // 日付 OK
+  { NOTHING,    5 },
+
+  { HOME,       2 },
   { NOTHING,   30 },
   { HOME,       2 },
   { NOTHING,   30 },
 
-  { B,          2 }, // やめる
-  { NOTHING,   30 },
-  { A,          2 }, // はい
-  { NOTHING,  150 },
-
-  { A,          2 }, 
-  { NOTHING,   10 },
-  { A,          2 }, //巣穴から~
-  { NOTHING,   10 },
-  
-
-  { LOOP_END, 0 },
+  //{ LOOP_END, 0 },
 };
 
 // Main entry point.
@@ -231,9 +203,7 @@ int main(void) {
   // Once that's done, we'll enter an infinite loop.
   for (;;)
   {
-    // ループ回数が指定されている場合は終了
-    if ( (loop_num != INFINITY) && (loop_count >= loop_end)) break;
-
+    //if ( ( LOOP_NUM != INFINITY ) && (loop_count >=  LOOP_NUM) ) break;
     // We need to run our task to process and deliver data for our IN and OUT endpoints.
     HID_Task();
     // We also need to run the main USB management task.
@@ -360,9 +330,7 @@ int hold_RX = STICK_CENTER;
 int bufindex = 0;
 int duration_count = 0;
 int loop_start_step = 0;
-int else_loop_n_index = 0;
-int end_loop_n_index = 0;
-bool is_loop_n = false;
+int if_final_loop_index = 0;
 
 void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
   // Prepare an empty report
@@ -496,45 +464,47 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
           
         case LOOP_END:
           ++loop_count;
+          loop_count %= LOOP_NUM;
           break;
 
-        case IF_LOOP_N:
-          is_loop_n = ( loop_count == step[bufindex].duration);
-          break;
-        
-        case ELSE_IF_LOOP_N:
-          else_loop_n_index = bufindex;
-          break;
-
-        case END_IF_LOOP_N:
-          end_loop_n_index = bufindex;
+        case IF_FINAL_LOOP:
+          if_final_loop_index = bufindex;
           break;
 
         default:
           break;
       }
 
-    if (is_loop_n)
-    {
-
-    }
-    else
-    {
     duration_count++;
 
-    if (duration_count > step[bufindex].duration)
+    bool need_to_increment_bufindex = true;
+    
+    if ( bufindex == if_final_loop_index)
     {
-      bufindex++;
-      duration_count = 0;
+      if ( loop_count != (LOOP_NUM - 1) )
+      {
+        // 条件に合わないので最終ステップに飛ばす
+        bufindex = (int)( sizeof(step) / sizeof(step[0])) - 1;
+        duration_count = 0;
+        need_to_increment_bufindex = false;
+      }
     }
 
-
-    if (bufindex > (int)( sizeof(step) / sizeof(step[0])) - 1)
+    if (need_to_increment_bufindex)
     {
-      bufindex = loop_start_step;
-      duration_count = 0;
+      if (duration_count > step[bufindex].duration)
+      {
+        bufindex++;
+        duration_count = 0;
+      }
+      
+      if (bufindex > (int)( sizeof(step) / sizeof(step[0])) - 1)
+      {
+        bufindex = loop_start_step;
+        duration_count = 0;
+      }
     }
-    }
+    
   }
 
   // Prepare to echo this report
