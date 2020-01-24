@@ -73,47 +73,35 @@ static const command step[] = {
   { LOOP_START, 0 },
   // これより下を無限ループ
 
-  { X,          2 },
+  { A,          2 },
   { NOTHING,   30 },
   { A,          2 },
-  { NOTHING,   90 },
-  { RIGHT,      1 },
-  { NOTHING,    2 },
-  { A,          2 },
-  { NOTHING,    2 },
+  { NOTHING,   30 },
+  { B,          2 },
+  { NOTHING,   30 },
   { UP,         2 },
-  { NOTHING,    2 },
-  { A,          2 },
-  { NOTHING,    2 },
-  { A,          2 },
-  { NOTHING,    2 },
-  { A,          2 },
-  { NOTHING,    2 },
-  { A,          2 },
-  { NOTHING,   90 },
-
-  { RIGHT,    120 },
-  { NOTHING,    5 },
-  { DOWN,      10 },
-  { NOTHING,    5 },
-  { A,          2 },
   { NOTHING,   10 },
-  { A,          2 },
+  { UP,         2 },
   { NOTHING,   10 },
+
   { A,          2 },
+  { NOTHING,   30 },
+  { A,          2 },
+  { NOTHING,   30 },
+  { A,          2 },
+  { NOTHING,   30 },
+  { B,          2 },
+  { NOTHING,   30 },
+  { B,          2 },
+  { NOTHING,   30 },
+  { B,          2 },
+  { NOTHING,   30 },
+  { B,          2 },
+  { NOTHING,   30 },
+  { UP,         2 },
   { NOTHING,   10 },
-  
-  /*
-  { IF_FINAL_LOOP, 0 },
 
-  { DOWN,      20 },
-  { NOTHING,    2 },
-  { LEFT,    1065 },
-  { NOTHING,    2 },
-  { UP,        20 },
-  { NOTHING,    2 },
-*/
-
+/*
   { HOME,       5 }, // Home
   { NOTHING,   15 },
   { DOWN,       2 },
@@ -190,7 +178,7 @@ static const command step[] = {
   { NOTHING,   30 },
   { HOME,       2 },
   { NOTHING,   30 },
-
+*/
   //{ LOOP_END, 0 },
 };
 
